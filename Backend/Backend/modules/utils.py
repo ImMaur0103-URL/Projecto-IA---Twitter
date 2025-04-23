@@ -23,7 +23,7 @@ def limpiar_texto(texto):
     texto = re.sub(r'\s+', ' ', texto).strip()
     return texto
 
-def tokenizar(texto):
+def tokenizar(texto, manejar_negacion=False):
     """
     Tokeniza un texto separándolo por espacios y eliminando tokens muy cortos.
     
@@ -33,9 +33,25 @@ def tokenizar(texto):
     Returns:
         list: Lista de tokens
     """
-    tokens = texto.lower().split()
-    tokens = [palabra for palabra in tokens if len(palabra) > 2]
-    return tokens
+    negadores = set(["no", "nunca", "jamas", "sin"])
+    texto = texto.lower()
+    texto = ''.join(c if c.isalnum() or c.isspace() else ' ' for c in texto)
+    tokens = texto.split()
+    if manejar_negacion:
+        nuevos_tokens = []
+        negacion_activa = False
+        for i, token in enumerate(tokens):
+            if token in negadores:
+                negacion_activa = True
+                nuevos_tokens.append(token)
+            elif negacion_activa and i < len(tokens) - 1:
+                nuevos_tokens.append(f"NEG_{tokens[i+1]}")
+                negacion_activa = False
+            else:
+                nuevos_tokens.append(token)
+        return nuevos_tokens
+    else:
+        return tokens
 
 def obtener_ngramas(tokens, n=2):
     """

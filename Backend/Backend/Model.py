@@ -24,7 +24,7 @@ with open('..\\Data\\ModelData\\vocabulario.pkl', 'rb') as f:
     vocabulario = pickle.load(f)
 
 # Crear el clasificador y asignarle las estructuras cargadas
-clasificador = NaiveBayesClassifier(alpha=2)
+clasificador = NaiveBayesClassifier(alpha=1.20)
 clasificador.frecuencia_palabras_por_clase = frecuencia_palabras_por_clase
 clasificador.total_palabras_por_clase = total_palabras_por_clase
 clasificador.documentos_por_clase = documentos_por_clase

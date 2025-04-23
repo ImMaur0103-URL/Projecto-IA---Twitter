@@ -30,7 +30,7 @@ class NaiveBayesClassifier:
         self.tablas_condicionales = None
         self.tam_vocabulario = 0
     
-    def procesar_documentos(self, X_train, y_train, usar_bigramas=True):
+    def procesar_documentos(self, X_train, y_train, usar_bigramas=False):
         """
         Procesa los documentos de entrenamiento para generar las estructuras necesarias.
         
@@ -52,7 +52,7 @@ class NaiveBayesClassifier:
         
         # Procesar cada documento
         for i, (texto, etiqueta) in enumerate(zip(X_train, y_train)):
-            palabras = utils.tokenizar(texto)
+            palabras = utils.tokenizar(texto, True)
             bigramas = utils.obtener_ngramas(palabras, 2) if usar_bigramas else []
             
             self.documentos_por_clase[etiqueta] += 1
