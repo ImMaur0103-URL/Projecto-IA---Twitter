@@ -1,6 +1,13 @@
 import pickle
 from math import log
 from collections import defaultdict, Counter
+import sys
+import os
+
+modulesPath = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(modulesPath)
+
+import utils
 
 class NaiveBayesClassifier:
     """
@@ -22,31 +29,6 @@ class NaiveBayesClassifier:
         self.log_probabilidades_previas = None
         self.tablas_condicionales = None
         self.tam_vocabulario = 0
-        
-    def tokenizar(self, texto):
-        """
-        Convierte un texto en una lista de tokens (palabras).
-        
-        Args:
-            texto (str): Texto a tokenizar.
-            
-        Returns:
-            list: Lista de tokens.
-        """
-        return texto.lower().split()
-    
-    def obtener_ngramas(self, tokens, n=2):
-        """
-        Genera n-gramas a partir de tokens.
-        
-        Args:
-            tokens (list): Lista de tokens.
-            n (int): Tamaño del n-grama (por defecto 2).
-            
-        Returns:
-            list: Lista de n-gramas.
-        """
-        return [' '.join(tokens[i:i+n]) for i in range(len(tokens)-n+1)]
     
     def procesar_documentos(self, X_train, y_train, usar_bigramas=True):
         """
@@ -70,8 +52,8 @@ class NaiveBayesClassifier:
         
         # Procesar cada documento
         for i, (texto, etiqueta) in enumerate(zip(X_train, y_train)):
-            palabras = self.tokenizar(texto)
-            bigramas = self.obtener_ngramas(palabras, 2) if usar_bigramas else []
+            palabras = utils.tokenizar(texto)
+            bigramas = utils.obtener_ngramas(palabras, 2) if usar_bigramas else []
             
             self.documentos_por_clase[etiqueta] += 1
             self.total_palabras_por_clase[etiqueta] += len(palabras)
@@ -194,7 +176,7 @@ class NaiveBayesClassifier:
         Returns:
             int: Clase predicha.
         """
-        palabras = self.tokenizar(texto)
+        palabras = utils.tokenizar(texto)
         puntajes = {}
         
         for clase in self.log_probabilidades_previas:
