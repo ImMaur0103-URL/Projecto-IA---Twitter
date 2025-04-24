@@ -4,7 +4,7 @@ import modules.NaiveBayes as NB
 
 app = FastAPI()
 
-@app.get("/api/Analizar")
+@app.get("/api/Analiza")
 def read_root(text):
     clasificador = NB.NaiveBayesClassifier()
     try:

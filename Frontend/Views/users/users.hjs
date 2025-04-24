@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{profile.name}} (@{{profile.username}}) | Landivar tweets</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/umd/lucide.min.js"></script>
+</head>
+<body class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6">
+  <div class="max-w-4xl mx-auto">
+    <!-- Back button -->
+    <a
+      href="/"
+      class="inline-flex items-center gap-2 mb-8 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+    >
+      <i data-lucide="arrow-left" class="h-4 w-4"></i>
+      <span>Back to feed</span>
+    </a>
+
+    <!-- Profile header card -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg mb-8 overflow-hidden shadow-lg">
+      <div class="relative h-48 bg-gradient-to-r from-purple-500 to-indigo-600">
+        <!-- Decorative elements -->
+        <div class="absolute inset-0 opacity-20">
+          <div class="absolute top-1/4 left-1/4 w-32 h-32 rounded-full bg-white"></div>
+          <div class="absolute bottom-1/3 right-1/3 w-24 h-24 rounded-full bg-white"></div>
+          <div class="absolute top-1/2 right-1/4 w-16 h-16 rounded-full bg-white"></div>
+        </div>
+      </div>
+
+      <div class="relative pt-0 p-6">
+        <div class="flex flex-col md:flex-row gap-6 -mt-12 md:-mt-16">
+          <!-- Profile picture -->
+          <div class="flex-shrink-0">
+            <div class="h-24 w-24 md:h-32 md:w-32 border-4 border-white dark:border-gray-900 rounded-xl shadow-md bg-gray-200 overflow-hidden">
+              {{#if profile.avatarUrl}}
+                <img src="{{profile.avatarUrl}}" alt="@{{profile.username}}" class="w-full h-full object-cover">
+              {{else}}
+                <div class="w-full h-full flex items-center justify-center text-2xl bg-gradient-to-br from-indigo-500 to-purple-500 text-white">
+                  {{profile.initials}}
+                </div>
+              {{/if}}
+            </div>
+          </div>
+
+          <!-- Profile info -->
+          <div class="flex-1 pt-4 md:pt-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{profile.name}}</h1>
+                <p class="text-gray-500 dark:text-gray-400">@{{profile.username}}</p>
+              </div>
+              <div class="flex gap-2">
+                <button class="flex items-center gap-1 border border-gray-300 dark:border-gray-600 rounded-full px-3 py-1 text-sm">
+                  <i data-lucide="mail" class="h-4 w-4"></i>
+                  Message
+                </button>
+                <button class="rounded-full px-3 py-1 text-sm bg-blue-500 text-white hover:bg-blue-600">
+                  Connect
+                </button>
+              </div>
+            </div>
+
+            <div class="mt-6 space-y-4">
+              <!-- Bio -->
+              <p class="text-gray-700 dark:text-gray-300">
+                {{profile.bio}}
+              </p>
+
+              <!-- Tags/Skills -->
+              <div class="flex flex-wrap gap-2">
+                {{#each profile.skills}}
+                <span class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-2 py-1 rounded-full text-sm">
+                  {{this}}
+                </span>
+                {{/each}}
+              </div>
+
+              <!-- Contact/Info -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                {{#if profile.location}}
+                <div class="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                  <i data-lucide="map-pin" class="h-4 w-4 text-gray-400"></i>
+                  <span>{{profile.location}}</span>
+                </div>
+                {{/if}}
+                
+                {{#if profile.website}}
+                <div class="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                  <i data-lucide="link" class="h-4 w-4 text-gray-400"></i>
+                  <a href="{{profile.website}}" class="text-indigo-600 dark:text-indigo-400 hover:underline">
+                    {{profile.websiteDisplay}}
+                  </a>
+                </div>
+                {{/if}}
+                
+                <div class="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                  <i data-lucide="calendar" class="h-4 w-4 text-gray-400"></i>
+                  <span>Joined {{profile.joinDate}}</span>
+                </div>
+                
+                {{#if profile.email}}
+                <div class="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                  <i data-lucide="mail" class="h-4 w-4 text-gray-400"></i>
+                  <a href="mailto:{{profile.email}}" class="text-indigo-600 dark:text-indigo-400 hover:underline">
+                    {{profile.email}}
+                  </a>
+                </div>
+                {{/if}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Posts Section -->
+    <div class="mb-8">
+      <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Recent Posts</h2>
+
+      <div class="grid gap-6">
+        {{#each posts}}
+        <div class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
+          <div class="p-6">
+            <div class="mb-4">
+              <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                {{this.title}}
+              </h3>
+              <p class="text-gray-600 dark:text-gray-300">
+                {{this.content}}
+              </p>
+            </div>
+
+            {{#if this.imageUrl}}
+            <div class="rounded-lg overflow-hidden mb-4">
+              <img
+                src="{{this.imageUrl}}"
+                alt="{{this.imageAlt}}"
+                class="w-full object-cover"
+              />
+            </div>
+            {{/if}}
+
+            {{#if this.linkPreview}}
+            <div class="bg-gray-100 dark:bg-gray-700 rounded-lg p-4 mb-4 flex items-center gap-4">
+              <div class="bg-indigo-100 dark:bg-indigo-900 rounded-md h-12 w-12 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="link" class="h-6 w-6 text-indigo-600 dark:text-indigo-400"></i>
+              </div>
+              <div>
+                <p class="font-medium text-gray-900 dark:text-white">
+                  {{this.linkPreview.title}}
+                </p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">{{this.linkPreview.url}}</p>
+              </div>
+            </div>
+            {{/if}}
+
+            <div class="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">
+              <span>{{this.timeAgo}}</span>
+              {{#if this.link}}
+              <a href="{{this.link}}" class="flex items-center gap-1 text-indigo-600 dark:text-indigo-400 hover:underline">
+                <span>{{this.linkText}}</span>
+                <i data-lucide="external-link" class="h-3 w-3"></i>
+              </a>
+              {{/if}}
+            </div>
+          </div>
+        </div>
+        {{/each}}
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+  </script>
+</body>
+</html>
